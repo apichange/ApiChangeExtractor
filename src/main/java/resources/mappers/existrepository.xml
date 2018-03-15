@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="apiChangeExtractor.mybatis.mapper.ExistRepositoryMapper">
+	<resultMap id="existrepository" type="ExistRepository">
+		<id property="id" column="id" />
+		<result property="repositoryId" column="repository_id" />
+		<result property="githubId" column="github_id" />
+		<result property="name" column="name" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="website" column="website"/>
+		<result property="stars" column="stars" />
+		<result property="address" column="address" />
+	</resultMap>
+	
+    <select id="selectAllRepository" resultMap="existrepository">
+    	select * from existrepository
+    </select>
+    <select id="selectInScope" resultMap="existrepository">
+    	select * from existrepository where id >= #{start} and id &lt; #{end}
+    </select>
+    <insert id="insertExistRepository"  useGeneratedKeys="true" keyProperty="id" parameterType="ExistRepository">
+		INSERT INTO existrepository (repository_id, github_id, name, user_id, user_name, website, stars, address)
+		VALUES (#{repositoryId}, #{githubId}, #{name}, #{userId}, #{userName}, #{website}, #{stars},#{address})
+    </insert>
+    
+    <select id="selectHighRepository" resultMap="existrepository">
+    	select * from highqualityrepositry
+    </select>
+    
+     <select id="selectNotRun" resultMap="existrepository">
+    	select a.id, a.repository_id, a.github_id, a.name, a.user_id, a.user_name, a.website, a.stars, a.address
+    	from highqualityrepositry as a, high_project_info as b
+    	where a.id = b.repository_id and total_time is null
+    </select>
+    
+    <select id="selectByRepositoryId" resultMap="existrepository">
+    	select * from highqualityrepositry where id = #{id}
+    </select>
+</mapper>
+    

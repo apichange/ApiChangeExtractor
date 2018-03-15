@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="apiChangeExtractor.mybatis.mapper.ApichangeMapper">
+	<resultMap id="apichange" type="Apichange">
+		<id property="apichangeId" column="apichange_id" />
+		<result property="repositoryId" column="repository_id" />
+		<result property="website" column="website" />
+		<result property="commitId" column="commit_id" />
+		<result property="parentCommitId" column="parent_commit_id" />
+		<result property="newFileName" column="new_file_name" />
+		<result property="oldFileName" column="old_file_name"/>
+		<result property="oldLineNumber" column="old_line_number" />
+		<result property="newLineNumber" column="new_line_number" />
+		<result property="changeType" column="change_type" />
+		<result property="oldContent" column="old_content" />
+		<result property="newContent" column="new_content" />
+		<result property="oldCompleteClassName" column="old_complete_class_name" />
+		<result property="newCompleteClassName" column="new_complete_class_name" />
+		<result property="oldMethodName" column="old_method_name" />
+		<result property="newMethodName" column="new_method_name" />
+		<result property="oldParameterNum" column="old_parameter_num" />
+		<result property="newParameterNum" column="new_parameter_num" />
+		<result property="oldParameterType" column="old_prameter_type" />
+		<result property="newParameterType" column="new_prameter_type" />
+		<result property="oldParameterName" column="old_parameter_name" />
+		<result property="newParameterName" column="new_parameter_name" />
+		<result property="commitLog" column="commit_log" />
+		<result property="oldMI" column="old_mi" />
+		<result property="newMI" column="new_mi" />
+		<result property="exampleId" column="example_id" />
+		<result property="parameterPosition" column="parameter_position" />
+	</resultMap>
+	<resultMap id="changeExample" type="ChangeExample">
+		<id property="exampleId" column="example_id" />
+		<result property="changeType" column="change_type" />
+		<result property="oldCompleteClassName" column="old_complete_class_name" />
+		<result property="newCompleteClassName" column="new_complete_class_name" />
+		<result property="oldMethodName" column="old_method_name" />
+		<result property="newMethodName" column="new_method_name" />
+		<result property="parameterPosition" column="parameter_position" />
+		<result property="outerRepeatNum" column="outer_repeat_num" />
+	</resultMap>
+	<resultMap id="innerChangeExample" type="InnerChangeExample">
+		<id property="innerExampleId" column="inner_example_id" />
+		<result property="repositoryId" column="repository_id" />
+		<result property="exampleId" column="example_id" />
+		<result property="innerRepeatNum" column="inner_repeat_num" />
+	</resultMap>
+	<resultMap id="apirank" type="APIRank">
+		<id property="apiId" column="api_id" />
+		<result property="className" column="class_name" />
+		<result property="methodName" column="method_name" />
+		<result property="bugTotal" column="bug_total" />
+		<result property="notbugTotal" column="notbug_total" />
+		<result property="bugR" column="bug_r" />
+		<result property="notbugR" column="notbug_r" />
+		<result property="testRate" column="test_rate" />
+		<result property="bugRank" column="bug_rank" />
+		<result property="notbugRank" column="notbug_rank" />
+	</resultMap>
+	<resultMap id="api" type="Api">
+		<result property="className" column="old_complete_class_name" />
+		<result property="methodName" column="old_method_name" />
+	</resultMap>
+	<resultMap id="Integer" type="Integer"/>
+	
+	<insert id="insertApichange"  useGeneratedKeys="true" keyProperty="apichangeId" parameterType="Apichange">
+		INSERT INTO apichange_7th (repository_id, website, commit_id, parent_commit_id, new_file_name, old_file_name,
+		                       old_line_number,new_line_number, change_type, old_content, new_content,
+		                       old_complete_class_name,new_complete_class_name,
+		                       old_method_name,new_method_name,
+		                       old_parameter_num,new_parameter_num,
+		                       old_parameter_type,new_parameter_type,
+		                       old_parameter_name,new_parameter_name,
+		                       commit_log,old_mi,new_mi,
+		                       example_id)
+		VALUES (#{repositoryId}, #{website}, #{commitId}, #{parentCommitId}, #{newFileName}, #{oldFileName},
+		        #{oldLineNumber},#{newLineNumber}, #{changeType}, #{oldContent},#{newContent},
+		        #{oldCompleteClassName}, #{newCompleteClassName},
+		        #{oldMethodName}, #{newMethodName},
+		        #{oldParameterNum},#{newParameterNum},
+		        #{oldParameterType},#{newParameterType},
+		        #{oldParameterName},#{newParameterName},
+		        #{commitLog},#{oldMI},#{newMI},
+		        #{exampleId})
+    </insert>
+    <insert id="insertApichangeList" useGeneratedKeys="true" keyProperty="apichangeId" parameterType="Apichange">
+    	INSERT INTO apichange_7th (repository_id, website, commit_id, parent_commit_id, new_file_name, old_file_name,
+		                       old_line_number,new_line_number, change_type, old_content, new_content,
+								old_complete_class_name,new_complete_class_name,
+								old_method_name,new_method_name,
+								old_parameter_num,new_parameter_num,
+								old_parameter_type,new_parameter_type,
+								old_parameter_name,new_parameter_name,
+		                       commit_log,old_mi,new_mi,example_id)
+		VALUES
+		<foreach collection ="list" item="item" index= "index" separator =",">
+			(#{item.repositoryId}, #{item.website}, #{item.commitId}, #{item.parentCommitId}, #{item.newFileName}, #{item.oldFileName},
+			#{item.oldLineNumber}, #{item.newLineNumber},#{item.changeType}, #{item.oldContent}, #{item.newContent},
+			#{item.oldCompleteClassName}, #{item.newCompleteClassName},
+			#{item.oldMethodName}, #{item.newMethodName},
+			#{item.oldParameterNum},#{item.newParameterNum},
+			#{item.oldParameterType},#{item.newParameterType},
+			#{item.oldParameterName},#{item.newParameterName},
+			#{item.commitLog},#{item.oldMI},#{item.newMI},#{exampleId})
+ 		</foreach> 
+	</insert>  
+	
+    <select id="countInnerRepeat" resultMap="Integer">
+		SELECT count(*) FROM apichange_7th 
+		WHERE
+			repository_id = #{repositoryId} AND
+			change_type = #{changeType} AND
+		 	old_complete_class_name = #{oldCompleteClassName} AND
+		 	new_complete_class_name = #{newCompleteClassName} AND
+		 	old_method_name = #{oldMethodName} AND
+		 	new_method_name = #{newMethodName}
+    </select>
+    <select id="countOuterRepeat" resultMap="Integer">
+		SELECT count(distinct repository_id) FROM apichange_7th 
+		WHERE
+			change_type = #{changeType} AND
+		 	old_complete_class_name = #{oldCompleteClassName} AND
+		 	new_complete_class_name = #{newCompleteClassName} AND
+		 	old_method_name = #{oldMethodName} AND
+		 	new_method_name = #{newMethodName}
+    </select>
+    
+    
+    
+    <select id="countAll">
+		SELECT count(*) FROM apichange_7th 
+    </select>
+    <select id="selectAll" resultMap="apichange">
+		SELECT * FROM apichange_7th 
+    </select>
+    <select id="selectAllExample" resultMap="changeExample">
+		SELECT * FROM example_7th 
+    </select>
+    
+    
+   
+    <select id="selectExample" resultMap="changeExample">
+		SELECT * FROM example_7th 
+		WHERE change_type = #{changeType} AND
+		 	old_complete_class_name = #{oldCompleteClassName} AND
+		 	new_complete_class_name = #{newCompleteClassName} AND
+		 	old_method_name = #{oldMethodName} AND
+		 	new_method_name = #{newMethodName}
+    </select>
+   
+    <select id="countExample" resultMap="Integer">
+		SELECT count(*) FROM example_7th 
+		WHERE change_type = #{changeType} AND
+		 	old_complete_class_name = #{oldCompleteClassName} AND
+		 	new_complete_class_name = #{newCompleteClassName} AND
+		 	old_method_name = #{oldMethodName} AND
+		 	new_method_name = #{newMethodName}
+    </select>
+
+    <insert id="insertExample"  useGeneratedKeys="true" keyProperty="exampleId" parameterType="ChangeExample">
+		INSERT INTO example_7th(change_type, 
+		                       old_complete_class_name,new_complete_class_name,
+		                       old_method_name,new_method_name,
+		                       outer_repeat_num,parameter_position)
+		VALUES ( #{changeType}, 
+		        #{oldCompleteClassName}, #{newCompleteClassName},
+		        #{oldMethodName}, #{newMethodName},
+		        #{outerRepeatNum},#{parameterPosition})
+    </insert>
+    <insert id="insertExampleList" useGeneratedKeys="true" keyProperty="exampleId" parameterType="ChangeExample">
+    	INSERT INTO example_7th(change_type, 
+		                       old_complete_class_name,new_complete_class_name,
+		                       old_method_name,new_method_name,
+		                       outer_repeat_num,parameter_position)
+		VALUES
+		<foreach collection ="list" item="item" index= "index" separator =",">
+			(#{item.changeType},
+			#{item.oldCompleteClassName}, #{item.newCompleteClassName},
+			#{item.oldMethodName}, #{item.newMethodName},
+			#{item.outerRepeatNum},#{item.parameterPosition})
+ 		</foreach> 
+	</insert>
+	<update id="updateApichangeExampleId"  useGeneratedKeys="true" keyProperty="apichangeId" parameterType="Apichange">
+		UPDATE apichange_7th 
+		SET	 example_id = #{exampleId}
+		WHERE
+		 	change_type = #{changeType} AND
+		 	old_complete_class_name = #{oldCompleteClassName} AND
+		 	new_complete_class_name = #{newCompleteClassName} AND
+		 	old_method_name = #{oldMethodName} AND
+		 	new_method_name = #{newMethodName} and parameter_position = #{parameterPosition}
+    </update>
+    
+    <update id="updateExampleOuterRepeatNum"  useGeneratedKeys="true" keyProperty="exampleId" parameterType="ChangeExample">
+		UPDATE example_7th
+		SET	 outer_repeat_num = #{outerRepeatNum}
+		WHERE
+		 	example_id = #{exampleId}
+    </update>
+    <insert id="insertInnerExample"  useGeneratedKeys="true" keyProperty="innerExampleId" parameterType="InnerChangeExample">
+		INSERT INTO inner_example_7th(repository_id, 
+		                       example_id)
+		VALUES ( #{repositoryId}, 
+		        #{exampleId})
+    </insert>
+    <insert id="insertInnerExampleList" useGeneratedKeys="true" keyProperty="innerExampleId" parameterType="InnerChangeExample">
+    	INSERT INTO inner_example_7th(repository_id, 
+		                       example_id,
+		                       inner_repeat_num)
+		VALUES
+		<foreach collection ="list" item="item" index= "index" separator =",">
+			(#{item.repositoryId},
+			#{item.exampleId}, #{item.innerRepeatNum})
+ 		</foreach> 
+	</insert>
+	<select id="selectInnerExample" resultMap="innerChangeExample">
+		SELECT * FROM inner_example_7th 
+		WHERE repository_id = #{repositoryId} AND
+		 	example_id = #{exampleId}
+    </select>
+    <update id="updateInnerExample"  useGeneratedKeys="true" keyProperty="innerExampleId" parameterType="InnerChangeExample">
+		UPDATE inner_example_7th
+		SET	 inner_repeat_num = #{innerRepeatNum}
+		WHERE
+		 	inner_example_id = #{innerExampleId}
+    </update>
+    <select id="selectAPIList" resultMap="api">
+		SELECT distinct old_complete_class_name, old_method_name FROM temp.apichange_7th; 
+    </select>
+
+
+    <select id="selectAPIListWithExampleId" resultMap="apichange">
+		SELECT *FROM apichange_7th  
+		where old_complete_class_name = #{className} and
+				old_method_name =#{methodName} and
+				change_type =#{changeType}
+    </select>
+
+    <insert id="insertApi"  useGeneratedKeys="true" keyProperty="apiId" parameterType="APIRank">
+		INSERT INTO top_apis_fix (class_name,method_name)
+		VALUES (#{className}, #{methodName})
+    </insert>
+    <select id="selectAPIs" resultMap="apirank">
+		SELECT * FROM temp.top_apis_fix; 
+    </select>
+    <select id="selectExamplesByApi" resultMap="changeExample">
+		SELECT * FROM example_7th 
+		WHERE change_type = #{changeType} AND
+		 	old_complete_class_name = #{className} AND
+		 	old_method_name = #{methodName}
+    </select>
+    
+    <select id="selectAllApiChangeTest" resultMap="apichange">
+		SELECT * FROM apichange_test 
+    </select>
+    <insert id="insertApichangeFix" useGeneratedKeys="true" keyProperty="apichangeId" parameterType="Apichange">
+		INSERT INTO apichange_7th (repository_id, website, commit_id, parent_commit_id, new_file_name, old_file_name,
+		                       old_line_number,new_line_number, change_type, old_content, new_content,
+		                       old_complete_class_name,new_complete_class_name,
+		                       old_method_name,new_method_name,
+		                       old_parameter_num,new_parameter_num,
+		                       old_parameter_type,new_parameter_type,
+		                       old_parameter_name,new_parameter_name,
+		                       commit_log,old_mi,new_mi,
+		                       example_id)
+		VALUES (#{repositoryId}, #{website}, #{commitId}, #{parentCommitId}, #{newFileName}, #{oldFileName},
+		        #{oldLineNumber},#{newLineNumber}, #{changeType}, #{oldContent},#{newContent},
+		        #{oldCompleteClassName}, #{newCompleteClassName},
+		        #{oldMethodName}, #{newMethodName},
+		        #{oldParameterNum},#{newParameterNum},
+		        #{oldParameterType},#{newParameterType},
+		        #{oldParameterName},#{newParameterName},
+		        #{commitLog},#{oldMI},#{newMI},
+		        #{exampleId})
+    </insert>
+
+    <update id="updateParameterPosition"  useGeneratedKeys="true" keyProperty="apichangeId" parameterType="Apichange">
+		UPDATE apichange_7th
+		SET	 parameter_position = #{parameterPosition}
+		WHERE
+		 	repository_id = #{repositoryId} AND website = #{website} AND commit_id = #{commitId} 
+		 	AND parent_commit_id = #{parentCommitId} AND new_file_name = #{newFileName} AND old_file_name = #{oldFileName} 
+		 	AND old_line_number = #{oldLineNumber} AND new_line_number = #{newLineNumber} AND change_type = #{changeType} 
+		 	AND old_content = #{oldContent} AND new_content = #{newContent} 
+		 	AND old_complete_class_name = #{oldCompleteClassName} AND new_complete_class_name = #{newCompleteClassName} 
+		    AND old_method_name = #{oldMethodName} AND new_method_name = #{newMethodName} 
+		    AND old_parameter_num = #{oldParameterNum} AND new_parameter_num = #{newParameterNum} 
+		    AND old_parameter_type = #{oldParameterType} AND new_parameter_type = #{newParameterType} 
+		    AND old_parameter_name = #{oldParameterName} AND new_parameter_name = #{newParameterName} 
+		    AND old_mi = #{oldMI} AND new_mi = #{newMI}
+    </update>
+    
+    <select id="selectAllParameterNum" resultMap="apichange">
+		SELECT * FROM apichange_7th where change_type='CHANGE_PAREMETER'
+    </select>
+    
+    <select id="countAPIBugR" resultMap="Integer">
+		SELECT count(distinct repository_id) 
+		FROM temp.apichange_7th 
+		WHERE old_complete_class_name=#{className} and old_method_name=#{methodName} and binary new_file_name not like '%Test%';
+    </select>
+    <update id="updateAPIBugR"  useGeneratedKeys="true" keyProperty="apiId" parameterType="APIRank">
+		UPDATE top_apis_fix
+		SET	 bug_r = #{bugR}
+		WHERE
+		 	api_id = #{apiId}
+    </update>
+    
+    <select id="countAPIBugTotal" resultMap="Integer">
+		SELECT count(*) 
+		FROM temp.apichange_7th 
+		WHERE old_complete_class_name=#{className} and old_method_name=#{methodName} and binary new_file_name not like '%Test%';
+    </select>
+    <update id="updateAPIBugTotal"  useGeneratedKeys="true" keyProperty="apiId" parameterType="APIRank">
+		UPDATE top_apis_fix
+		SET	 bug_total = #{bugTotal}
+		WHERE
+		 	api_id = #{apiId}
+    </update>
+    
+    <select id="selectChangeExampleFromApichange" resultMap="changeExample">
+		SELECT distinct 
+		change_type,
+		old_complete_class_name, new_complete_class_name,
+		old_method_name,new_method_name,
+		parameter_position FROM apichange_7th;
+    </select>
+    <select id="selectInnerChangeExampleFromApichange" resultMap="innerChangeExample">
+		SELECT distinct 
+		repository_id,
+		example_id FROM apichange_7th;
+    </select>
+    
+
+</mapper>
+    

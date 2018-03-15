@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="apiChangeExtractor.mybatis.mapper.ProjectInfoMapper">
+	<resultMap id="projectInfo" type="ProjectInfo">
+		<id property="repositoryId" column="repository_id" />
+		<result property="website" column="website"/>
+		<result property="stars" column="stars" />
+		
+		<result property="blankLoc" column="blank_loc" />
+		<result property="commentLoc" column="comment_loc" />
+		<result property="codeLoc" column="code_loc" />
+		
+		<result property="commits" column="commits" />
+		<result property="bugCommits" column="bug_commits" />
+		<result property="moreFiveBugCommits" column="more_five_bug_commits" />
+		<result property="aordBugCommits" column="aord_bug_commits" />
+		
+		<result property="filterTime" column="filter_time" />
+		<result property="diffTime" column="diff_time" />
+		<result property="matchTime" column="match_time" />
+		<result property="countTime" column="count_time" />
+		<result property="totalTime" column="total_time" />
+	</resultMap>
+	<select id="selectAllInfo" resultMap="projectInfo">
+    	select * from high_project_info
+    </select>
+	<insert id="insertProjectInfo" parameterType="ProjectInfo">
+		INSERT INTO high_project_info (repository_id, website, stars, blank_loc, comment_loc, code_loc,commits,bug_commits)
+		VALUES (#{repositoryId}, #{website}, #{stars}, #{blankLoc}, #{commentLoc}, #{codeLoc}, #{commits}, #{bugCommits})
+    </insert>
+    <update id="updateProjectInfo" parameterType="ProjectInfo">
+		UPDATE high_project_info 
+		SET	 aord_bug_commits = #{aordBugCommits},filter_time = #{filterTime},diff_time = #{diffTime},match_time = #{matchTime},count_time = #{countTime},total_time = #{totalTime}
+		WHERE repository_id = #{repositoryId}
+    </update>
+    <update id="updateProjectInfoByMoreFive" parameterType="ProjectInfo">
+		UPDATE high_project_info 
+		SET	 more_five_bug_commits = #{moreFiveBugCommits}
+		WHERE repository_id = #{repositoryId}
+    </update>
+</mapper>
+    

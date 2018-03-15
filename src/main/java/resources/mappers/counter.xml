@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="apiChangeExtractor.mybatis.mapper.CounterMapper">
+	<select id="selectOneApiCount" resultType="Integer">
+    	SELECT count(a.apichange_id) as sum
+		FROM apichange_6th as a, top_apis as b
+		WHERE a.new_complete_class_name = b.class_name AND a.new_method_name = b.method_name
+		 and a.new_complete_class_name=#{className} and a.new_method_name=#{methodName}
+		group by a.new_complete_class_name,a.new_method_name,a.repository_id
+    </select>
+    <update id="updateTestRate">
+		UPDATE top_apis 
+		SET test_rate = #{testRate}
+		WHERE class_name = #{className} AND method_name = #{methodName}
+    </update>
+</mapper>
+    
