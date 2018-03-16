@@ -1,22 +1,17 @@
-ApiChangeExactor
+Carl (ApiChangeExtractor)
 ===
 
-### Step one: build the database
-We use the MySQL database. First, build or select a new schema. Second, use three following files under the folder `src\main\java\resources\final` to create tables:
+### Step 1: setup the database
+MySQL database is currently used in our implementation. Use the following three files under the folder `src\main\java\resources\final` to create tables.
   * apichange.sql
   * example.sql
   * inner_example.sql
 
-### Step two: modify the configuration.xml 
-Modify configuration.xml under the folder `src\main\java\resources`. Change the third element `environment` in the element `environments` to your own configuration.
- 
+### Step 2: configure the configuration.xml
+Configure the `configuration.xml` under the folder `src\main\java\resources` by setting the third environment element in the environments element to your own configuration.
 
-### Step three: package by maven
-Use the command `mvn package -Dmaven.test.skip=true` to package the project.
+### Step 3: compile the project
+Use the command `mvn package -Dmaven.test.skip=true` to compile the project.
 
-### Step four: run the program
-Then we can run it by using `ApiChangeExtractor-0.7.0-jar-with-dependencies.jar` in the `target` folder:
-```cmd
-    java –jar ApiChangeExtractor-0.7.0-jar-with-dependencies.jar res
-```
-PS: `ApiChangeExtractor-0.7.0-jar-with-dependencies.jar` is the jar that we get by step three, and `res` is the file that contains all projects’ absolute paths we want to analysis, one line one project.
+### Step 4: run Carl
+Run Carl by using `java –jar apichange.jar repo`, where apichange.jar is generated in Step 3 and repo contains the absolute paths of all the projects we want to analysis.
